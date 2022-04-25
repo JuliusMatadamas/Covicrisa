@@ -1,3 +1,21 @@
 body {
     font-family: "Open Sans", "Calibri", sans-serif;
 }
+
+main {
+    background-color: var(--color-secundario);
+    position: relative;
+    min-height: calc(100vh - 70px);
+    top: 70px;
+    width: 100%;
+}
+
+nav {
+    background-color: var(--color-principal);
+    height: 70px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
