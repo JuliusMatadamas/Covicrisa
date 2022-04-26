@@ -1,3 +1,32 @@
+.details {
+    color: var(--color-secundario);
+    font-size: 1.5em;
+    text-align: center;
+}
+.index__container {
+    animation: animate 18s ease-in-out infinite;
+    background-size: cover;
+}
+@keyframes animate {
+    0%, 100% {
+        background-image: url("../images/slider/glass00.jpg");
+    }
+    16% {
+        background-image: url("../images/slider/glass01.jpg");
+    }
+    32% {
+        background-image: url("../images/slider/glass02.jpg");
+    }
+    48% {
+        background-image: url("../images/slider/glass03.jpg");
+    }
+    64% {
+        background-image: url("../images/slider/glass04.jpg");
+    }
+    80% {
+        background-image: url("../images/slider/glass05.jpg");
+    }
+}
 .links {
     display: flex;
 }
@@ -20,6 +49,17 @@
 .logo a img {
     height: 50px;
     width: auto;
+}
+.outer {
+    align-items: center;
+    background-color: rgba(0,0,0,.6);
+    bottom: 0;
+    display: flex;
+    left: 0;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 .navbar {
     align-items: center;
