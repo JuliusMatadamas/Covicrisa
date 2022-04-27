@@ -1,15 +1,27 @@
 body {
     font-family: "Open Sans", "Calibri", sans-serif;
 }
-
+footer {
+    align-items: center;
+    background-color: var(--color-principal);
+    bottom: 0;
+    color: var(--color-secundario);
+    font-size: .7em;
+    display: flex;
+    height: 30px;
+    left: 0;
+    justify-content: center;
+    position: fixed;
+    right: 0;
+}
 main {
     background-color: var(--color-secundario);
+    bottom: 30px;
     position: relative;
-    min-height: calc(100vh - 70px);
+    min-height: calc(100vh - 100px);
     top: 70px;
     width: 100%;
 }
-
 nav {
     background-color: var(--color-principal);
     height: 70px;
