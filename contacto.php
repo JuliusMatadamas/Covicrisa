@@ -1,59 +1,37 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="author" content="Julio Cesar Matadamas Zaragoza">
-    <title>Covicrisa</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
-<nav>
-    <!-- NAVBAR -->
-    <div class="navbar">
-        <span>&equiv;</span>
+<!--
+Se importa la parte superior del documento
+-->
+<?php require './php/Higher.php'; ?>
 
-        <div class="logo">
-            <a href="#">
-                <img src="images/logotipo_inverse.png" alt="">
-            </a>
-        </div>
 
-        <div class="nav-links">
-            <div class="sidebar-logo">
-                <a href="#">
-                    <img src="images/isotipo_inverse.png" alt="">
-                </a>
-                <span>
-                        &times;
-                    </span>
-            </div>
-
-            <ul class="links">
-                <li><a href="index.html">Negocio</a></li>
-                <li><a href="catalogo.php">Catálogo de productos</a></li>
-                <li><a href="cotizacion.php">Solicitud de cotización</a></li>
-                <li><a href="contacto.php">Contacto</a></li>
-                <li><a href="login.php">Acceso a usuarios</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<main>
-    <div class="content">
+<!--
+Contenido de la página
+-->
+<main class="container">
+    <section class="card">
         <h2>Contacto</h2>
-    </div>
+
+        <hr>
+
+        <article>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="ul__contacto text-left">
+                        <li><strong>Dirección</strong>: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda consectetur, cupiditate delectus est explicabo id illo in ipsam natus.</li>
+                        <li><strong>Telefono</strong>: (52) 55-5555-5555</li>
+                        <li><strong>Correo electrónico</strong>: contacto@covicrisa.com</li>
+                        <li><strong>Horario de atención</strong>: Lunes a viernes de 09:00 a 18:00, sábados de 09:00 a 14:00.</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div id="map" class="map"></div>
+                </div>
+            </div>
+        </article>
+    </section>
 </main>
 
-<footer>
-    PW1-JUMZ
-</footer>
-
-<!-- JS -->
-<script src="js/main.js"></script>
-</body>
-</html>
+<!--
+Se importa la parte inferior del documento
+-->
+<?php require './php/Nether.php'; ?>

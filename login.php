@@ -1,59 +1,88 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="author" content="Julio Cesar Matadamas Zaragoza">
-    <title>Covicrisa</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
-<nav>
-    <!-- NAVBAR -->
-    <div class="navbar">
-        <span>&equiv;</span>
+<?php
+session_start();
 
-        <div class="logo">
-            <a href="#">
-                <img src="images/logotipo_inverse.png" alt="">
-            </a>
-        </div>
+// SI EL USUARIO YA INICIO SESIÓN
+if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
+{
+    if ($_SERVER["SERVER_NAME"] == "localhost")
+    {
+        header('Location: '.$_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"]."/dpw/admin/ventas.php");
+    }
+    else
+    {
+        header('Location: '.$_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"]."/admin/ventas.php");
+    }
+}
+else
+{
+    /*
+Se importa la parte superior del documento
+*/
+    require './php/Higher.php';
+    ?>
 
-        <div class="nav-links">
-            <div class="sidebar-logo">
-                <a href="#">
-                    <img src="images/isotipo_inverse.png" alt="">
-                </a>
-                <span>
-                        &times;
-                    </span>
-            </div>
+    <!--
+    Contenido de la página
+    -->
+    <main class="container">
+        <section class="card">
+            <h2>Acceso a usuarios</h2>
 
-            <ul class="links">
-                <li><a href="index.html">Negocio</a></li>
-                <li><a href="catalogo.php">Catálogo de productos</a></li>
-                <li><a href="cotizacion.php">Solicitud de cotización</a></li>
-                <li><a href="contacto.php">Contacto</a></li>
-                <li><a href="login.php">Acceso a usuarios</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+            <hr>
 
-<main>
-    <div class="content">
-        <h2>Login</h2>
-    </div>
-</main>
+            <article class="container__form-login">
+                <form id="form-login" autocomplete="off">
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <label for="usuario">Usuario</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="usuario"
+                                    id="usuario"
+                                    placeholder="Ingrese entre 5 y 8 letras."
+                                    required
+                            >
+                        </div>
+                    </div>
 
-<footer>
-    PW1-JUMZ
-</footer>
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <label for="password">Password</label>
+                            <input
+                                    type="password"
+                                    class="form-control"
+                                    name="password"
+                                    id="password"
+                                    placeholder="Ingrese entre 5 y 8 carácteres."
+                                    required
+                            >
+                        </div>
+                    </div>
 
-<!-- JS -->
-<script src="js/main.js"></script>
-</body>
-</html>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <button
+                                    type="submit"
+                                    class="btn btn-secondary w-100"
+                            >Ingresar</button>
+                        </div>
+                    </div>
+                </form>
+            </article>
+
+            <section id="info" class="alert">
+                &nbsp;
+            </section>
+        </section>
+    </main>
+
+    <!--
+    Se importa la parte inferior del documento
+    -->
+    <?php
+    require './php/Nether.php';
+
+}

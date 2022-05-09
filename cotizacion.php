@@ -1,59 +1,92 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="author" content="Julio Cesar Matadamas Zaragoza">
-    <title>Covicrisa</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
-<nav>
-    <!-- NAVBAR -->
-    <div class="navbar">
-        <span>&equiv;</span>
+<!--
+Se importa la parte superior del documento
+-->
+<?php require './php/Higher.php'; ?>
 
-        <div class="logo">
-            <a href="#">
-                <img src="images/logotipo_inverse.png" alt="">
-            </a>
-        </div>
 
-        <div class="nav-links">
-            <div class="sidebar-logo">
-                <a href="#">
-                    <img src="images/isotipo_inverse.png" alt="">
-                </a>
-                <span>
-                        &times;
-                    </span>
-            </div>
+<!--
+Contenido de la página
+-->
+<main class="container">
+    <section class="card">
+        <h2>Solicitud de cotización</h2>
+        <article>
+            <p>Complete el siguiente formulario para solicitar una cotización de producto, después de clic en 'Enviar', una vez recibida su solicitud le responderemos a la brevedad.</p>
 
-            <ul class="links">
-                <li><a href="index.html">Negocio</a></li>
-                <li><a href="catalogo.php">Catálogo de productos</a></li>
-                <li><a href="cotizacion.php">Solicitud de cotización</a></li>
-                <li><a href="contacto.php">Contacto</a></li>
-                <li><a href="login.php">Acceso a usuarios</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+            <hr>
 
-<main>
-    <div class="content">
-        <h2>Cotización</h2>
-    </div>
+            <form action="">
+                <div class="row">
+                    <div class="col-12 text-left">
+                        <label for="nombre">Nombre</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="nombre"
+                                id="nombre"
+                                placeholder="Ingrese su nombre completo"
+                        >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 text-left">
+                        <label for="edad">Edad</label>
+                        <input
+                                type="number"
+                                class="form-control"
+                                name="edad"
+                                id="edad"
+                                placeholder="18 - 60"
+                        >
+                    </div>
+
+                    <div class="col-md-10 text-left">
+                        <label for="email">Correo electrónico</label>
+                        <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                id="email"
+                                placeholder="ejemplo@email.com"
+                        >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-left">
+                        <label for="solicitud">Solicitud</label>
+                        <textarea
+                                class="form-control"
+                                name="solcitud"
+                                id="solicitud"
+                                cols="30"
+                                rows="3"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <button
+                                type="reset"
+                                class="btn btn-warning w-100"
+                        >Cancelar</button>
+                    </div>
+
+                    <div class="col-md-3">
+                        <button
+                                type="button"
+                                class="btn btn-success w-100"
+                        >Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </article>
+    </section>
 </main>
 
-<footer>
-    PW1-JUMZ
-</footer>
-
-<!-- JS -->
-<script src="js/main.js"></script>
-</body>
-</html>
+<!--
+Se importa la parte inferior del documento
+-->
+<?php require './php/Nether.php'; ?>

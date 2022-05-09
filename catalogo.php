@@ -1,59 +1,59 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="author" content="Julio Cesar Matadamas Zaragoza">
-    <title>Covicrisa</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
-<nav>
-    <!-- NAVBAR -->
-    <div class="navbar">
-        <span>&equiv;</span>
+<!--
+Se importa la parte superior del documento
+-->
+<?php require './php/Higher.php'; ?>
 
-        <div class="logo">
-            <a href="#">
-                <img src="images/logotipo_inverse.png" alt="">
-            </a>
-        </div>
 
-        <div class="nav-links">
-            <div class="sidebar-logo">
-                <a href="#">
-                    <img src="images/isotipo_inverse.png" alt="">
-                </a>
-                <span>
-                        &times;
-                    </span>
-            </div>
+<!--
+Contenido de la página
+-->
+<main class="container">
+    <section class="card">
+        <h2>Catálogo de productos</h2>
+        <article>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Clave</th>
+                        <th>Nombre</th>
+                        <th>Precio x m<sup>2</sup></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $tipos = ["laminado", "templado", "simple"];
+                    $formas = ["rectangular", "cuadrado", "circular", "ovalado"];
+                    $precios = ["00" => 30.5, "01" => 34.00, "02" => 8.80, "10" => 30.35, "11" => 34.00, "12" => 8.80, "20" => 41.00, "21" => 46.00, "22" => 11.80, "30" => 41.00, "31" => 46.00, "32" => 11.9];
 
-            <ul class="links">
-                <li><a href="index.html">Negocio</a></li>
-                <li><a href="catalogo.php">Catálogo de productos</a></li>
-                <li><a href="cotizacion.php">Solicitud de cotización</a></li>
-                <li><a href="contacto.php">Contacto</a></li>
-                <li><a href="login.php">Acceso a usuarios</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<main>
-    <div class="content">
-        <h2>Catalogo</h2>
-    </div>
+                    foreach ($tipos as &$tipo){
+                        foreach ($formas as &$forma) {
+                            $nombre = ucfirst($tipo) . " " . ucfirst($forma);
+                            $clave = strtoupper(substr($tipo,0,2)) . strtoupper(substr($forma, 0, 2)) . '-' . array_search($forma, $formas) . array_search($tipo, $tipos);
+                            $key = array_search($forma, $formas) . array_search($tipo, $tipos);
+                            $precio = '$' . number_format( $precios[$key], 2);
+                            echo "<tr>
+                                <td class='td__img-container'>
+                                    <img src='";
+                            echo $uri;
+                            echo "images/$forma.png'>
+                                </td>
+                                <td class='td__container'>
+                                    $clave                                   
+                                </td>
+                                <td class='td__container'>$nombre</td>
+                                <td class='td__container'>$precio</td>
+                            </tr>";
+                        }
+                    }
+                ?>
+                </tbody>
+            </table>
+        </article>
+    </section>
 </main>
 
-<footer>
-    PW1-JUMZ
-</footer>
-
-<!-- JS -->
-<script src="js/main.js"></script>
-</body>
-</html>
+<!--
+Se importa la parte inferior del documento
+-->
+<?php require './php/Nether.php'; ?>
