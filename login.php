@@ -40,7 +40,7 @@ Se importa la parte superior del documento
                                     class="form-control"
                                     name="usuario"
                                     id="usuario"
-                                    placeholder="Ingrese entre 5 y 8 letras."
+                                    placeholder="7 carácteres (letras y números)"
                                     required
                             >
                         </div>
@@ -54,7 +54,7 @@ Se importa la parte superior del documento
                                     class="form-control"
                                     name="password"
                                     id="password"
-                                    placeholder="Ingrese entre 5 y 8 carácteres."
+                                    placeholder="9 carácteres (letras y números)"
                                     required
                             >
                         </div>

@@ -39,7 +39,7 @@ Contenido de la página
                             echo "images/$forma.png'>
                                 </td>
                                 <td class='td__container'>
-                                    $clave                                   
+                                    $clave 
                                 </td>
                                 <td class='td__container'>$nombre</td>
                                 <td class='td__container'>$precio</td>

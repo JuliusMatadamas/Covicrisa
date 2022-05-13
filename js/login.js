@@ -13,20 +13,20 @@ al servidor
 formLogin.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (usuario.value.length < 5 || usuario.value.length > 8)
+    if (usuario.value.trim().length < 7)
     {
         info.classList.remove("alert-success");
         info.classList.add("alert-danger");
-        info.innerHTML = "¡El usuario debe tener entre 5 y 8 letras!";
+        info.innerHTML = "¡El usuario debe tener 7 carácteres (letras y números)!";
         usuario.focus();
         return;
     }
 
-    if (password.value.length < 5 ||  password.value.length > 8)
+    if (password.value.trim().length < 9 )
     {
         info.classList.remove("alert-success");
         info.classList.add("alert-danger");
-        info.innerHTML = "¡El password debe tener entre 5 y 8 carácteres!";
+        info.innerHTML = "¡El password debe tener 9 carácteres (letras y números)!";
         password.focus();
         return;
     }

@@ -1,11 +1,14 @@
 <!--
+Para no estar escribiendo el mismo código en cada documento del sitio, se emplean documentos PHP que servirán
+de plantillas, así, si se requiere hacer un cambio, este cambio se hará en un sólo documento pero se verá en
+todas las páginas del sitio web
 Se importa la parte superior del documento
 -->
 <?php require './php/Higher.php'; ?>
 
 
 <!--
-Contenido de la página
+En esta parte se mostrará el código HTML que contendrá el contenido de la página
 -->
 <main class="index__container">
     <section class="outer">
@@ -19,6 +22,7 @@ Contenido de la página
 </main>
 
 <!--
-Se importa la parte inferior del documento
+Al igual que en la parte superior del documento, se emplea el mismo método de plantillas utilizando un sólo
+documento, que en este caso mostrará la parte inferior del documento
 -->
 <?php require './php/Nether.php'; ?>
