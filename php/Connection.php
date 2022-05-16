@@ -16,15 +16,11 @@ class Connection
             // Se determina si se está utilizando el servidor local o el externo
             if ($_SERVER["SERVER_ADDR"] == "127.0.0.1")
             {
-                $this->con = new PDO("mysql:host=localhost;dbname=3974890_dpw", "root", "");
-                $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $this->con->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, "SET NAMES 'utf8'");
+                $this->con = new PDO("mysql:host=localhost;dbname=3974890_dpw", "root", "", array('charset'=>'utf8'));
             }
             else
             {
-                $this->con = new PDO("mysql:host=fdb33.awardspace.net;dbname=3974890_dpw", "3974890_dpw", "rl9#8rke06cq]OF}");
-                $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $this->con->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, "SET NAMES 'utf8'");
+                $this->con = new PDO("mysql:host=fdb33.awardspace.net;dbname=3974890_dpw", "3974890_dpw", "rl9#8rke06cq]OF}", array('charset'=>'utf8'));
             }
 
             return $this->con;

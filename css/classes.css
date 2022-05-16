@@ -392,6 +392,9 @@
     max-width: 400px;
     width: 90%;
 }
+#container__table-catalogo {
+    overflow: auto;
+}
 .content {
     margin: 0px 30px 100px 30px;
     padding: 30px;
