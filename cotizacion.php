@@ -15,7 +15,7 @@ Contenido de la página
 
             <hr>
 
-            <form action="">
+            <form id="form__cotizacion">
                 <div class="row">
                     <div class="col-12 text-left">
                         <label for="nombre">Nombre</label>
@@ -24,8 +24,13 @@ Contenido de la página
                                 class="form-control"
                                 name="nombre"
                                 id="nombre"
+                                minlength="10"
+                                maxlength="50"
                                 placeholder="Ingrese su nombre completo"
                         >
+                        <div id="feedback__nombre" class="feedback">
+                            &nbsp;
+                        </div>
                     </div>
                 </div>
 
@@ -37,8 +42,13 @@ Contenido de la página
                                 class="form-control"
                                 name="edad"
                                 id="edad"
+                                min="1"
+                                max="60"
                                 placeholder="18 - 60"
                         >
+                        <div id="feedback__edad" class="feedback">
+                            &nbsp;
+                        </div>
                     </div>
 
                     <div class="col-md-10 text-left">
@@ -50,6 +60,9 @@ Contenido de la página
                                 id="email"
                                 placeholder="ejemplo@email.com"
                         >
+                        <div id="feedback__email" class="feedback">
+                            &nbsp;
+                        </div>
                     </div>
                 </div>
 
@@ -62,7 +75,12 @@ Contenido de la página
                                 id="solicitud"
                                 cols="30"
                                 rows="3"
+                                minlength="20"
+                                placeholder="Ingrese mínimo 20 caracteres."
                         ></textarea>
+                        <div id="feedback__solicitud" class="feedback">
+                            &nbsp;
+                        </div>
                     </div>
                 </div>
 
@@ -76,12 +94,14 @@ Contenido de la página
 
                     <div class="col-md-3">
                         <button
-                                type="button"
+                                type="submit"
                                 class="btn btn-success w-100"
                         >Enviar</button>
                     </div>
                 </div>
             </form>
+
+            <div id="respuesta__cotizacion" class="row text-center">&nbsp;</div>
         </article>
     </section>
 </main>

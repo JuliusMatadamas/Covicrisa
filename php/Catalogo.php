@@ -21,12 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
         $productos = $stm->fetchAll(PDO::FETCH_ASSOC);
         $database->closeConnection();
 
+        /*
         $results = [];
-
-        header("Access-Control-Allow-Origin: *");
-        header("content-type:application/json");
-        http_response_code(200);
-
         for ($i = 0; $i < count($productos); $i++)
         {
             $a = array_keys($productos[$i]);
@@ -38,9 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
             $c = array_combine($a, $b);
 
             array_push($results, $c);
-        }
+        }*/
 
-        echo json_encode($results);
+        header("Access-Control-Allow-Origin: *");
+        header("content-type:application/json");
+        http_response_code(200);
+        echo json_encode($productos);
+        exit;
     }
     catch (PDOException $e)
     {

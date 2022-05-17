@@ -45,6 +45,163 @@ if (itemsUrl.indexOf("catalogo.php"))
 }
 
 /**
+ * ACCIONES A REALIZAR SI EL USUARIO SE ENCUENTRA EN LA SECCIÓN 'cotización'
+ */
+if (itemsUrl.indexOf("cotizacion.php"))
+{
+    let f = document.querySelector("#form__cotizacion");
+    let nombre              = document.querySelector("#nombre");
+    let feedbackNombre      = document.querySelector("#feedback__nombre");
+    let edad                = document.querySelector("#edad");
+    let feedbackEdad        = document.querySelector("#feedback__edad");
+    let email               = document.querySelector("#email");
+    let feedbackEmail       = document.querySelector("#feedback__email");
+    let solicitud           = document.querySelector("#solicitud");
+    let feedbackSolicitud   = document.querySelector("#feedback__solicitud");
+    let respuestaCotizacion = document.querySelector("#respuesta__cotizacion");
+    let btnReset            = document.querySelector('button[type="reset"]')
+    let btnSubmit           = document.querySelector('button[type="submit"]')
+
+    nombre.addEventListener("keypress", () => {
+        nombre.classList.remove("border-danger");
+        feedbackNombre.classList.remove("text-danger");
+        feedbackNombre.innerHTML = "&nbsp;";
+    })
+
+    edad.addEventListener("keypress", () => {
+        edad.classList.remove("border-danger");
+        feedbackEdad.classList.remove("text-danger");
+        feedbackEdad.innerHTML = "&nbsp;";
+    })
+
+    email.addEventListener("keypress", () => {
+        email.classList.remove("border-danger");
+        feedbackEmail.classList.remove("text-danger");
+        feedbackEmail.innerHTML = "&nbsp;";
+    })
+
+    solicitud.addEventListener("keypress", () => {
+        solicitud.classList.remove("border-danger");
+        feedbackSolicitud.classList.remove("text-danger");
+        feedbackSolicitud.innerHTML = "&nbsp;";
+    })
+
+
+    if (f)
+    {
+        /**
+         * Antes de realizar el submit del formulario se valida la información de los campos
+         */
+        f.addEventListener("submit", e => {
+            e.preventDefault();
+
+            // Si el nombre no cumple con el mínimo de longitud de caracteres
+            if (nombre.value.trim().length < 10 || nombre.value.trim().length > 50)
+            {
+                nombre.classList.add("border-danger");
+                feedbackNombre.classList.add("text-danger");
+                feedbackNombre.innerHTML = "¡El nombre es obligatorio y debe tener entre 10 y 50 caracteres!";
+                nombre.focus();
+                return;
+            }
+
+            // Si la edad no es menor de 18 o mayor de 60
+            if (isNaN(parseInt(edad.value)) || parseInt(edad.value) < 18 || parseInt(edad.value)  > 60)
+            {
+                edad.classList.add("border-danger");
+                feedbackEdad.classList.add("text-danger");
+                feedbackEdad.innerHTML = "¡La edad es obligatoria, no menor de 18 ni mayor de 60 años!";
+                edad.focus();
+                return;
+            }
+
+            // Si el email no es válido
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if ( !re.test(email.value.toLowerCase()) )
+            {
+                email.classList.add("border-danger");
+                feedbackEmail.classList.add("text-danger");
+                feedbackEmail.innerHTML = "¡El email es obligatorio y debe ser una dirección válida!";
+                email.focus();
+                return;
+            }
+
+            // Si la solicitud es menor de 20 caracteres
+            if (solicitud.value.trim().length < 20)
+            {
+                solicitud.classList.add("border-danger");
+                feedbackSolicitud.classList.add("text-danger");
+                feedbackSolicitud.innerHTML = "¡El texto de la solicitud es obligatorio y debe tener al menos 20 caracteres!";
+                solicitud.focus();
+                return;
+            }
+
+            // Se bloquean los botones de reset y submit
+            btnReset.disabled = true;
+            btnSubmit.disabled = true;
+
+            /**
+             * Se realiza el envio de la información por AJAX
+             */
+            respuestaCotizacion.innerHTML = "Espere mientras se envía la información...";
+            let req = new XMLHttpRequest();
+            let formData = new FormData();
+            formData.append('nombre', nombre.value.trim());
+            formData.append('edad', edad.value);
+            formData.append('email', email.value);
+            formData.append('solicitud', solicitud.value);
+
+            req.onreadystatechange = function()
+            {
+                if (req.readyState === 4)
+                {
+                    if(req.status !== 200)
+                    {
+                        if (JSON.parse(req.responseText).message)
+                        {
+                            btnReset.disabled = false;
+                            btnSubmit.disabled = false;
+                            respuestaCotizacion.classList.add("text-danger");
+                            respuestaCotizacion.innerHTML = "Respuesta del servidor: " + JSON.parse(req.responseText).message;
+                            return;
+                        }
+                        else
+                        {
+                            btnReset.disabled = false;
+                            btnSubmit.disabled = false;
+                            respuestaCotizacion.classList.add("text-danger");
+                            respuestaCotizacion.innerHTML = "Ocurrió un error y la información no pudo ser enviada.";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        respuestaCotizacion.classList.remove("text-danger");
+                        respuestaCotizacion.innerHTML = "Respuesta del servidor: " + JSON.parse(req.responseText).message;
+
+                        setTimeout(() => {
+                            f.reset();
+                            btnReset.disabled = false;
+                            btnSubmit.disabled = false;
+                            respuestaCotizacion.innerHTML = "";
+                        }, 3000);
+                    }
+                }
+            };
+            req.open('POST', 'php/Cotizacion.php');
+            req.send(formData);
+        });
+
+        /**
+         * Se resetea el formulario cuando el usuario de clic en el botón de cancelar
+         */
+        f.addEventListener("reset", e => {
+            f.reset();
+        })
+    }
+}
+
+/**
  * Función para llenar el select 'listaProductos' con la lista de productos almacenada en la base de datos
  * @param param - corresponde a la respuesta del servidor en formato JSON
  */
@@ -56,126 +213,127 @@ function cargarProductos(params)
     // Se selecciona el elemento 'select' del DOM del documento y se le añade el primer option
     let selectListaProductos = document.querySelector("#listaProductos");
 
-    // Si la respuesta del servidor incluye un mensaje significa que hubo un error al obtener el listado de productos
-    if (params.message)
+    if (selectListaProductos)
     {
-        // Se muestra el error en el contenedor de la tabla
-        container.innerHTML = productosCatalogo.message;
-    }
-    else
-    {
-        // Se cargan los productos en la variable productosCatalogo
-        productosCatalogo = params;
-
-        // Se crea el option por defecto y se agrega al select
-        let nOption = document.createElement("option");
-        nOption.value = "TODOS";
-        nOption.text = "Ver todos los productos";
-        selectListaProductos.appendChild(nOption);
-
-        // Se recorre el listado de productos
-        for (let prod of params)
+        // Si la respuesta del servidor incluye un mensaje significa que hubo un error al obtener el listado de productos
+        if (params.message)
         {
-            // Se crean los demás options y se agregan al select
-            let nOption = document.createElement("option");
-            nOption.value = prod.clave;
-            nOption.text = prod.nombre;
-            selectListaProductos.appendChild(nOption);
+            // Se muestra el error en el contenedor de la tabla
+            container.innerHTML = productosCatalogo.message;
         }
+        else
+        {
+            // Se cargan los productos en la variable productosCatalogo
+            productosCatalogo = params;
 
-        // Se agrega el evento 'click' al botón para mostrar la tabla de los productos del catalogo
-        let btn = document.querySelector("#btnMostrarTablaCatalogo");
-        btn.addEventListener("click", () => {
-            // Primero se vacía el contenedor
-            container.innerHTML = '';
+            // Se crea el option por defecto y se agrega al select
+            let nOption = document.createElement("option");
+            nOption.value = "TODOS";
+            nOption.text = "Ver todos los productos";
+            selectListaProductos.appendChild(nOption);
 
-            // Se crea la tabla
-            let t = document.createElement("table");
-            t.classList.add("table", "table-bordered");
-
-            // Se crean los encabezados de la tabla
-            let trH = document.createElement("tr");
-            let thImg = document.createElement("th");
-            thImg.innerHTML = "Img";
-            trH.appendChild(thImg);
-            let thClave = document.createElement("th");
-            thClave.innerHTML = "Clave";
-            trH.appendChild(thClave);
-            let thNombre = document.createElement("th");
-            thNombre.innerHTML = "Nombre";
-            trH.appendChild(thNombre);
-            let thDesc = document.createElement("th");
-            thDesc.innerHTML = "Descripción";
-            trH.appendChild(thDesc);
-            let thPres = document.createElement("th");
-            thPres.innerHTML = "Presentación";
-            trH.appendChild(thPres);
-            let thPrec = document.createElement("th");
-            thPrec.innerHTML = "Precio m<sup>2</sup>";
-            trH.appendChild(thPrec);
-
-            // Se añaden los encabezados a la tabla
-            t.appendChild(trH);
-
-            // Se obtiene el valor seleccionado del select
-            if(selectListaProductos.value == "TODOS")
+            // Se recorre el listado de productos
+            for (let prod of params)
             {
-                for (prod of productosCatalogo)
+                // Se crean los demás options y se agregan al select
+                let nOption = document.createElement("option");
+                nOption.value = prod.clave;
+                nOption.text = prod.nombre;
+                selectListaProductos.appendChild(nOption);
+            }
+
+            // Se agrega el evento 'click' al botón para mostrar la tabla de los productos del catalogo
+            let btn = document.querySelector("#btnMostrarTablaCatalogo");
+            btn.addEventListener("click", () => {
+                // Primero se vacía el contenedor
+                container.innerHTML = '';
+
+                // Se crea la tabla
+                let t = document.createElement("table");
+                t.classList.add("table", "table-bordered");
+
+                // Se crean los encabezados de la tabla
+                let trH = document.createElement("tr");
+                let thImg = document.createElement("th");
+                thImg.innerHTML = "Img";
+                trH.appendChild(thImg);
+                let thClave = document.createElement("th");
+                thClave.innerHTML = "Clave";
+                trH.appendChild(thClave);
+                let thNombre = document.createElement("th");
+                thNombre.innerHTML = "Nombre";
+                trH.appendChild(thNombre);
+                let thDesc = document.createElement("th");
+                thDesc.innerHTML = "Descripción";
+                trH.appendChild(thDesc);
+                let thPres = document.createElement("th");
+                thPres.innerHTML = "Presentación";
+                trH.appendChild(thPres);
+                let thPrec = document.createElement("th");
+                thPrec.innerHTML = "Precio m<sup>2</sup>";
+                trH.appendChild(thPrec);
+
+                // Se añaden los encabezados a la tabla
+                t.appendChild(trH);
+
+                // Se obtiene el valor seleccionado del select
+                if(selectListaProductos.value == "TODOS")
                 {
-                    // Se crean las filas de la tabla
+                    for (prod of productosCatalogo)
+                    {
+                        // Se crean las filas de la tabla
+                        let trB = document.createElement("tr");
+                        let tdImg = document.createElement("td");
+                        tdImg.innerHTML = "<img src='"+ location.origin +"/images/"+ prod.imagen +".png' />";
+                        trB.appendChild(tdImg);
+                        let tdClave = document.createElement("td");
+                        tdClave.innerHTML = prod.clave;
+                        trB.appendChild(tdClave);
+                        let tdNombre = document.createElement("td");
+                        tdNombre.innerHTML = prod.nombre;
+                        trB.appendChild(tdNombre);
+                        let tdDesc = document.createElement("td");
+                        tdDesc.innerHTML = prod.descripcion;
+                        trB.appendChild(tdDesc);
+                        let tdPres = document.createElement("td");
+                        tdPres.innerHTML = prod.presentacion;
+                        trB.appendChild(tdPres);
+                        let tdPrec = document.createElement("td");
+                        tdPrec.innerHTML = "$ "+ prod.precio;
+                        trB.appendChild(tdPrec);
+                        t.appendChild(trB);
+                    }
+                }
+                else
+                {
+                    // Se busca el producto seleccionado en la lista de productos
+                    let producto = productosCatalogo.find(x => x.clave == selectListaProductos.value);
+
+                    // Se crea la fila de la tabla
                     let trB = document.createElement("tr");
                     let tdImg = document.createElement("td");
-                    tdImg.innerHTML = "<img src='"+ location.origin +"/images/"+ prod.imagen +".png' />";
+                    tdImg.innerHTML = "<img src='"+ location.origin +"/images/"+ producto.imagen +".png' />";
                     trB.appendChild(tdImg);
                     let tdClave = document.createElement("td");
-                    tdClave.innerHTML = prod.clave;
+                    tdClave.innerHTML = producto.clave;
                     trB.appendChild(tdClave);
                     let tdNombre = document.createElement("td");
-                    tdNombre.innerHTML = prod.nombre;
+                    tdNombre.innerHTML = producto.nombre;
                     trB.appendChild(tdNombre);
                     let tdDesc = document.createElement("td");
-                    tdDesc.innerHTML = prod.descripcion;
+                    tdDesc.innerHTML = producto.descripcion;
                     trB.appendChild(tdDesc);
                     let tdPres = document.createElement("td");
-                    tdPres.innerHTML = prod.presentacion;
+                    tdPres.innerHTML = producto.presentacion;
                     trB.appendChild(tdPres);
                     let tdPrec = document.createElement("td");
-                    tdPrec.innerHTML = "$ "+ prod.precio;
+                    tdPrec.innerHTML = "$ "+ producto.precio;
                     trB.appendChild(tdPrec);
                     t.appendChild(trB);
                 }
-            }
-            else
-            {
-                // Se busca el producto seleccionado en la lista de productos
-                let producto = productosCatalogo.find(x => x.clave == selectListaProductos.value);
-
-                // Se crea la fila de la tabla
-                let trB = document.createElement("tr");
-                let tdImg = document.createElement("td");
-                tdImg.innerHTML = "<img src='"+ location.origin +"/images/"+ producto.imagen +".png' />";
-                trB.appendChild(tdImg);
-                let tdClave = document.createElement("td");
-                tdClave.innerHTML = producto.clave;
-                trB.appendChild(tdClave);
-                let tdNombre = document.createElement("td");
-                tdNombre.innerHTML = producto.nombre;
-                trB.appendChild(tdNombre);
-                let tdDesc = document.createElement("td");
-                tdDesc.innerHTML = producto.descripcion;
-                trB.appendChild(tdDesc);
-                let tdPres = document.createElement("td");
-                tdPres.innerHTML = producto.presentacion;
-                trB.appendChild(tdPres);
-                let tdPrec = document.createElement("td");
-                tdPrec.innerHTML = "$ "+ producto.precio;
-                trB.appendChild(tdPrec);
-                t.appendChild(trB);
-            }
-
-
-            // Se añade la tabla al contenedor
-            container.appendChild(t);
-        })
+                // Se añade la tabla al contenedor
+                container.appendChild(t);
+            })
+        }
     }
 }
