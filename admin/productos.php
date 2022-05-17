@@ -3,7 +3,7 @@ session_start();
 
 if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
 {
-    ?>
+?>
     <!--
     Se importa la parte superior del documento
     -->
@@ -15,19 +15,30 @@ if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
     -->
     <main class="container">
         <section class="card">
-            <h2>Solicitudes de cotización</h2>
+            <h2>Productos por vender</h2>
 
             <br>
 
             <div class="row">
-                <div id="container__table-solicitudes" class="col-12">
-                    <table id="table__solicitudes" class="table table-bordered">
+                <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 text-left">
+                    <button
+                            type="button"
+                            class="btn btn-info w-100"
+                    >Agregar producto</button>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div id="container__table-productos" class="col-12">
+                    <table id="table__productos" class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>Nombre completo</th>
-                            <th>Correo</th>
-                            <th>Fecha de solicitud</th>
-                            <th>Descripción</th>
+                            <th>N°</th>
+                            <th>Clave</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
                             <th colspan="3">Acciones</th>
                         </tr>
                         </thead>

@@ -54,11 +54,11 @@ formLogin.addEventListener("submit", (e) => {
                 setTimeout(() => {
                     if (location.host == "localhost")
                     {
-                        window.location = location.origin + "/dpw/admin/ventas.php";
+                        window.location = location.origin + "/dpw/admin/productos.php";
                     }
                     else
                     {
-                        window.location = location.origin + "/admin/ventas.php";
+                        window.location = location.origin + "/admin/productos.php";
                     }
                 }, 2000);
                 return;

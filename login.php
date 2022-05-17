@@ -6,11 +6,11 @@ if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
 {
     if ($_SERVER["SERVER_NAME"] == "localhost")
     {
-        header('Location: '.$_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"]."/dpw/admin/ventas.php");
+        header('Location: '.$_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"]."/dpw/admin/productos.php");
     }
     else
     {
-        header('Location: '.$_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"]."/admin/ventas.php");
+        header('Location: '.$_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"]."/admin/productos.php");
     }
 }
 else

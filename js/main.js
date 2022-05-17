@@ -18,7 +18,7 @@ btnMenuClose.addEventListener("click", () => {
 /**
  * ACCIONES A REALIZAR SI EL USUARIO SE ENCUENTRA EN LA SECCIÓN 'catalogo'
  */
-if (itemsUrl.indexOf("catalogo.php"))
+if (itemsUrl.indexOf("catalogo.php") !== -1)
 {
     let req = new XMLHttpRequest();
     req.onreadystatechange = function()
@@ -47,7 +47,7 @@ if (itemsUrl.indexOf("catalogo.php"))
 /**
  * ACCIONES A REALIZAR SI EL USUARIO SE ENCUENTRA EN LA SECCIÓN 'cotización'
  */
-if (itemsUrl.indexOf("cotizacion.php"))
+if (itemsUrl.indexOf("cotizacion.php") !== -1)
 {
     let f = document.querySelector("#form__cotizacion");
     let nombre              = document.querySelector("#nombre");
@@ -62,30 +62,41 @@ if (itemsUrl.indexOf("cotizacion.php"))
     let btnReset            = document.querySelector('button[type="reset"]')
     let btnSubmit           = document.querySelector('button[type="submit"]')
 
-    nombre.addEventListener("keypress", () => {
-        nombre.classList.remove("border-danger");
-        feedbackNombre.classList.remove("text-danger");
-        feedbackNombre.innerHTML = "&nbsp;";
-    })
+    if (nombre)
+    {
+        nombre.addEventListener("keypress", () => {
+            nombre.classList.remove("border-danger");
+            feedbackNombre.classList.remove("text-danger");
+            feedbackNombre.innerHTML = "&nbsp;";
+        })
+    }
 
-    edad.addEventListener("keypress", () => {
-        edad.classList.remove("border-danger");
-        feedbackEdad.classList.remove("text-danger");
-        feedbackEdad.innerHTML = "&nbsp;";
-    })
+    if (edad)
+    {
+        edad.addEventListener("keypress", () => {
+            edad.classList.remove("border-danger");
+            feedbackEdad.classList.remove("text-danger");
+            feedbackEdad.innerHTML = "&nbsp;";
+        })
+    }
 
-    email.addEventListener("keypress", () => {
-        email.classList.remove("border-danger");
-        feedbackEmail.classList.remove("text-danger");
-        feedbackEmail.innerHTML = "&nbsp;";
-    })
+    if (email)
+    {
+        email.addEventListener("keypress", () => {
+            email.classList.remove("border-danger");
+            feedbackEmail.classList.remove("text-danger");
+            feedbackEmail.innerHTML = "&nbsp;";
+        })
+    }
 
-    solicitud.addEventListener("keypress", () => {
-        solicitud.classList.remove("border-danger");
-        feedbackSolicitud.classList.remove("text-danger");
-        feedbackSolicitud.innerHTML = "&nbsp;";
-    })
-
+    if (solicitud)
+    {
+        solicitud.addEventListener("keypress", () => {
+            solicitud.classList.remove("border-danger");
+            feedbackSolicitud.classList.remove("text-danger");
+            feedbackSolicitud.innerHTML = "&nbsp;";
+        })
+    }
 
     if (f)
     {
@@ -200,6 +211,135 @@ if (itemsUrl.indexOf("cotizacion.php"))
         })
     }
 }
+
+/**
+ * ACCIONES A REALIZAR SI EL USUARIO SE ENCUENTRA EN LA PARTE ADMINISTRATIVA, EN LA SECCIÓN 'Consultar solicitudes'
+ */
+if (itemsUrl.indexOf("solicitudes.php") !== -1)
+{
+    let req = new XMLHttpRequest();
+    req.onreadystatechange = function()
+    {
+        if (req.readyState === 4)
+        {
+            // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
+            if(req.status !== 200)
+            {
+                console.log(req.responseText);
+            }
+            else
+            {
+                let cotizaciones = JSON.parse(req.responseText);
+                let t = document.querySelector("#table__solicitudes");
+                if (t)
+                {
+                    for (cotizacion of cotizaciones)
+                    {
+                        let fila = document.createElement("tr");
+
+                        let col_Nombre = document.createElement("td");
+                        col_Nombre.innerHTML = cotizacion.nombre;
+                        fila.appendChild(col_Nombre);
+
+                        let col_Correo = document.createElement("td");
+                        col_Correo.innerHTML = cotizacion.correo;
+                        fila.appendChild(col_Correo);
+
+                        let col_Fecha = document.createElement("td");
+                        col_Fecha.innerHTML = cotizacion.fecha;
+                        fila.appendChild(col_Fecha);
+
+                        let col_Descripcion = document.createElement("td");
+                        col_Descripcion.innerHTML = cotizacion.descripcion;
+                        fila.appendChild(col_Descripcion);
+
+                        let col_Ver = document.createElement("td");
+                        col_Ver.innerHTML = '<button type="button" class="btn btn-sm btn-info">Ver</button>';
+                        fila.appendChild(col_Ver);
+
+                        let col_Editar = document.createElement("td");
+                        col_Editar.innerHTML = '<button type="button" class="btn btn-sm btn-success">Editar</button>';
+                        fila.appendChild(col_Editar);
+
+                        let col_Borrar = document.createElement("td");
+                        col_Borrar.innerHTML = '<button type="button" class="btn btn-sm btn-danger">Borrar</button>';
+                        fila.appendChild(col_Borrar);
+
+                        t.tBodies.item(0).appendChild(fila);
+                    }
+                }
+            }
+        }
+    };
+    req.open('POST', '../php/Cotizaciones.php');
+    req.send();
+}
+
+/**
+ * ACCIONES A REALIZAR SI EL USUARIO SE ENCUENTRA EN LA PARTE ADMINISTRATIVA, EN LA SECCIÓN 'Productos por vender'
+ */
+if (itemsUrl.indexOf("productos.php") !== -1)
+{
+    let req = new XMLHttpRequest();
+    req.onreadystatechange = function()
+    {
+        if (req.readyState === 4)
+        {
+            // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
+            if(req.status !== 200)
+            {
+                console.log(req.responseText);
+            }
+            else
+            {
+                let productos = JSON.parse(req.responseText);
+                let t = document.querySelector("#table__productos");
+                if (t)
+                {
+                    let cont = 1;
+                    for (producto of productos)
+                    {
+                        let fila = document.createElement("tr");
+
+                        let col_Id = document.createElement("td");
+                        col_Id.innerHTML = cont;
+                        fila.appendChild(col_Id);
+
+                        let col_Clave = document.createElement("td");
+                        col_Clave.innerHTML = producto.clave;
+                        fila.appendChild(col_Clave);
+
+                        let col_Nombre = document.createElement("td");
+                        col_Nombre.innerHTML = producto.nombre;
+                        fila.appendChild(col_Nombre);
+
+                        let col_Precio = document.createElement("td");
+                        col_Precio.innerHTML = producto.precio;
+                        fila.appendChild(col_Precio);
+
+                        let col_Ver = document.createElement("td");
+                        col_Ver.innerHTML = '<button type="button" class="btn btn-sm btn-info">Ver</button>';
+                        fila.appendChild(col_Ver);
+
+                        let col_Editar = document.createElement("td");
+                        col_Editar.innerHTML = '<button type="button" class="btn btn-sm btn-success">Editar</button>';
+                        fila.appendChild(col_Editar);
+
+                        let col_Borrar = document.createElement("td");
+                        col_Borrar.innerHTML = '<button type="button" class="btn btn-sm btn-danger">Borrar</button>';
+                        fila.appendChild(col_Borrar);
+
+                        t.tBodies.item(0).appendChild(fila);
+                        cont++;
+                    }
+                }
+            }
+        }
+    };
+    req.open('POST', '../php/Productos.php');
+    req.send();
+}
+
 
 /**
  * Función para llenar el select 'listaProductos' con la lista de productos almacenada en la base de datos

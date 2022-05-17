@@ -34,7 +34,7 @@ En esta sección se mostrarán las opciones d enavegación por el sitio web
                 ?>
                 <ul class="links">
                     <li><a href="<?php echo $uri; ?>index.php">Inicio</a></li>
-                    <li><a href="<?php echo $uri; ?>admin/ventas.php">Productos por vender</a></li>
+                    <li><a href="<?php echo $uri; ?>admin/productos.php">Productos por vender</a></li>
                     <li><a href="<?php echo $uri; ?>admin/solicitudes.php">Consultar solicitudes</a></li>
                     <li><a href="<?php echo $uri; ?>php/Logout.php">Cerrar sesión</a></li>
                 </ul>

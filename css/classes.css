@@ -159,6 +159,16 @@
     border-radius: 0.25rem;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.btn-lg {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: 0.3rem;
+}
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
 .btn:hover {
     color: #212529;
 }
@@ -468,6 +478,70 @@
     flex: 0 0 auto;
     width: 100%;
 }
+.col-xl-auto {
+    flex: 0 0 auto;
+    width: auto;
+}
+
+.col-xl-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+}
+
+.col-xl-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+}
+
+.col-xl-3 {
+    flex: 0 0 auto;
+    width: 25%;
+}
+
+.col-xl-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+}
+
+.col-xl-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+}
+
+.col-xl-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+
+.col-xl-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+}
+
+.col-xl-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+}
+
+.col-xl-9 {
+    flex: 0 0 auto;
+    width: 75%;
+}
+
+.col-xl-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+}
+
+.col-xl-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+}
+
+.col-xl-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
 .container {
     align-items: center;
     display: flex;
@@ -487,7 +561,7 @@
     max-width: 400px;
     width: 90%;
 }
-#container__table-catalogo {
+#container__table-catalogo, #container__table-solicitudes, #container__table-productos {
     overflow: auto;
 }
 .content {
@@ -651,6 +725,11 @@
 }
 .table-bordered > :not(caption) > * {
     border-width: 1px 0;
+}
+#table__solicitudes tbody tr td button, #table__productos tbody tr td button {
+    margin: 5px 5px 5px 5px;
+    text-align: center;
+    width: 60px;
 }
 .td__action {
     padding-bottom: 10px;
