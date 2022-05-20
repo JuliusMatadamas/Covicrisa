@@ -561,7 +561,7 @@
     max-width: 400px;
     width: 90%;
 }
-#container__table-catalogo, #container__table-solicitudes, #container__table-productos {
+#container__table-solicitudes, #container__table-productos {
     overflow: auto;
 }
 .content {
@@ -691,6 +691,49 @@
     height: 100%;
     line-height: 70px;
 }
+.navigation {
+    align-items: center;
+    display: flex;
+    height: 400px;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.navigation-visibility {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    z-index: 999;
+}
+.navigation-visibility .slide-icon {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    box-shadow: 0 5px 25px rgb(1 1 1);
+    height: 10px;
+    margin: 0 6px;
+    transform: translateY(-50px);
+    width: 20px;
+    z-index: 999;
+}
+.navigation-visibility .slide-icon.active {
+    background: #4285F4;
+}
+.prev-btn, .next-btn {
+    background: rgba(255, 255, 255, 0.8);
+    color: #222;
+    cursor: pointer;
+    font-size: 3rem;
+    padding: 5px;
+    z-index: 999;
+}
+.prev-btn {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.next-btn {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
 .outer {
     align-items: center;
     background-color: rgba(0,0,0,.6);
@@ -722,6 +765,57 @@
 }
 .sidebar-logo {
     display: none;
+}
+.slider {
+    border-radius: 10px;
+    margin: auto;
+    max-width: 800px;
+    min-height: 400px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.slider:hover .navigation, .slider:hover .slide .info {
+    opacity: 1;
+}
+#gallery .slide {
+    clip-path: circle(0% at 0 50%);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+#gallery .slide.active {
+    clip-path: circle(150% at 0 50%);
+    transition: 2s;
+}
+#gallery .info {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 5px 25px rgb(1 1 1);
+    color: #222;
+    margin-left: 10%;
+    margin-top: 50px;
+    opacity: 0;
+    padding: 20px;
+    position: absolute;
+    transition: opacity 0.5s ease;
+    width: 80%;
+}
+#gallery .slide .info h2 {
+    font-size: 2rem;
+    font-weight: 300;
+    text-align: center;
+}
+#gallery .slide .info p {
+    font-size: 1rem;
+    font-weight: 300;
+    text-align: justify;
+}
+#gallery .slide img {
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
 }
 .table-bordered > :not(caption) > * {
     border-width: 1px 0;

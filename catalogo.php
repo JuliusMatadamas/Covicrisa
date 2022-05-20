@@ -10,22 +10,20 @@ Contenido de la página
 <main class="container">
     <section class="card">
         <h2>Catálogo de productos</h2>
-        <article>
-            <div class="row">
-                <div class="col-md-4 text-left">
-                    <label for="producto">Selecciona el producto</label>
-                    <select class="form-control" name="listaProductos" id="listaProductos">
-                    </select>
-                </div>
 
-                <div class="col-md-2">
-                    <label for="">&nbsp;</label>
-                    <button class="btn btn-secondary w-100" id="btnMostrarTablaCatalogo">Ver</button>
+        <hr>
+
+        <article id="card__catalogo">
+            <div class="slider text-start">
+                <div id="gallery">
+                </div>
+                <div class="navigation">
+                    <span class="prev-btn">&laquo;</span>
+                    <span class="next-btn">&raquo;</span>
+                </div>
+                <div class="navigation-visibility">
                 </div>
             </div>
-        </article>
-
-        <article id="container__table-catalogo">
         </article>
     </section>
 </main>

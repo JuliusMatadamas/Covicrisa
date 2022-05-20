@@ -19,6 +19,9 @@ Contenido de la página
                 <div class="row">
                     <div class="col-12 text-left">
                         <label for="nombre">Nombre</label>
+                        <!--
+                            Campo de tipo texto con validaciones HTML de longitud mínima y máxima así como la especificación de requerido, si ninguna de estas 3 valicadiones se cumple no se permitirá el envío del formulario
+                        -->
                         <input
                                 type="text"
                                 class="form-control"
