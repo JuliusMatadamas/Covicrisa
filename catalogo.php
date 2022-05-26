@@ -10,9 +10,7 @@ Contenido de la página
 <main class="container">
     <section class="card">
         <h2>Catálogo de productos</h2>
-
         <hr>
-
         <article id="card__catalogo">
             <div class="slider text-start">
                 <div id="gallery">

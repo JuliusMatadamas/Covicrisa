@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
         // Se abre la conexión a la BD
         $db = $database->openConnection();
         // Se crea la consulta SQL a realizar
-        $sql = "SELECT * FROM `catalogo` WHERE `catalogo`.`deleted_at` IS NULL";
+        $sql = "SELECT * FROM productos WHERE deleted_at IS NULL";
         // Se prepara la consulta a la BD
         $stm = $db->prepare($sql);
         // Se realiza la consulta a la BD
@@ -20,21 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
         // Se obtienen los resultados de la consulta
         $productos = $stm->fetchAll(PDO::FETCH_ASSOC);
         $database->closeConnection();
-
-        /*
-        $results = [];
-        for ($i = 0; $i < count($productos); $i++)
-        {
-            $a = array_keys($productos[$i]);
-            $b = [];
-            for ($j = 0; $j < count($a); $j++)
-            {
-                array_push($b, utf8_encode($productos[$i][$a[$j]]));
-            }
-            $c = array_combine($a, $b);
-
-            array_push($results, $c);
-        }*/
 
         header("Access-Control-Allow-Origin: *");
         header("content-type:application/json");

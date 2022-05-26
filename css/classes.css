@@ -416,6 +416,27 @@
     text-align: center;
     width: 90%;
 }
+#card__nuevo-producto {
+    position: relative;
+}
+.close-modal {
+    align-items: center;
+    background: #dc3545;
+    border: solid 5px #b41212;
+    border-radius: 100%;
+    color: #ffffff;
+    display: flex;
+    font-size: 1.5rem;
+    height: 40px;
+    justify-content: center;
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 40px;
+}
+.close-modal:hover {
+    cursor: pointer;
+}
 .col {
     flex: 1 0 0%;
 }
@@ -560,6 +581,68 @@
     margin: auto;
     max-width: 400px;
     width: 90%;
+}
+#container__form-editar_producto {
+    align-items: center;
+    background: rgba(0,0,0,.5);
+    bottom: 0;
+    display: none;
+    left: 0;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+#container__form-editar_producto .card {
+    position: relative;
+    margin: auto;
+    margin-top: 50px;
+    max-width: 900px;
+    width: 80%;
+}
+#container__form-nuevo_producto {
+    align-items: center;
+    background: rgba(0,0,0,.5);
+    bottom: 0;
+    display: none;
+    left: 0;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+#container__form-nuevo_producto .card {
+    margin: auto;
+    margin-top: 50px;
+    max-width: 900px;
+    width: 80%;
+}
+#container__producto-info {
+    align-items: center;
+    background: rgba(0,0,0,.5);
+    bottom: 0;
+    display: none;
+    left: 0;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+#container__producto-info .card {
+    position: relative;
+    margin: auto;
+    margin-top: 50px;
+    max-width: 600px;
+    width: 80%;
+}
+#table__producto-info  th {
+    border-bottom: solid 1px #5e5e5e;
+}
+#table__producto-info  td {
+    border-bottom: solid 1px #5e5e5e;
 }
 #container__table-solicitudes, #container__table-productos {
     overflow: auto;

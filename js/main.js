@@ -70,7 +70,7 @@ if (itemsUrl.indexOf("catalogo.php") !== -1) {
                         {
                             cont == 0 ? active = 'active' : active = '';
                             slides += `<div class="slide ${active}">
-                            <img src="/images/${producto.imagen}.png" alt="${producto.nombre}">
+                            <img src="/images/${producto.imagen}" alt="${producto.nombre}">
                             <div class="info">
                                 <h2>${producto.nombre}</h2>
                                 <p>${producto.descripcion}</p>
@@ -403,55 +403,473 @@ if (itemsUrl.indexOf("solicitudes.php") !== -1) {
  * ACCIONES A REALIZAR SI EL USUARIO SE ENCUENTRA EN LA PARTE ADMINISTRATIVA, EN LA SECCIÓN 'Productos por vender'
  */
 if (itemsUrl.indexOf("productos.php") !== -1) {
-    let req = new XMLHttpRequest();
-    req.onreadystatechange = function() {
-        if (req.readyState === 4) {
-            // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
-            if (req.status !== 200) {
-                console.log(req.responseText);
-            } else {
-                let productos = JSON.parse(req.responseText);
-                let t = document.querySelector("#table__productos");
-                if (t) {
-                    let cont = 1;
-                    for (producto of productos) {
-                        let fila = document.createElement("tr");
+    let productos = {};
+    let proveedores = {};
+    let formNuevoProducto = document.querySelector("#form__nuevo-producto");
+    let clave = document.querySelector("#clave");
+    let nombre = document.querySelector("#nombre");
+    let descripcion = document.querySelector("#descripcion");
+    let presentacion = document.querySelector("#presentacion");
+    let precio = document.querySelector("#precio");
+    let imagen = document.querySelector("#imagen");
+    let proveedorId = document.querySelector("#proveedor_id");
+    let formInfo = document.querySelector("#form__info");
 
-                        let col_Id = document.createElement("td");
-                        col_Id.innerHTML = cont;
-                        fila.appendChild(col_Id);
+    // SE LLAMA A LA FUNCIÓN cargarProductos
+    cargarProductos();
+    // CARGA DE LOS PRODUCTOS DEL CATALOGO DE LA BASE DE DATOS
+    function cargarProductos()
+    {
+        let req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (req.readyState === 4) {
+                // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
+                if (req.status !== 200) {
+                    console.log(req.responseText);
+                } else {
+                    productos = JSON.parse(req.responseText);
+                    let t = document.querySelector("#table__productos");
+                    if (t) {
+                        t.childNodes[3].textContent = "";
+                        let cont = 1;
+                        for (producto of productos) {
+                            let fila = document.createElement("tr");
 
-                        let col_Clave = document.createElement("td");
-                        col_Clave.innerHTML = producto.clave;
-                        fila.appendChild(col_Clave);
+                            let col_Id = document.createElement("td");
+                            col_Id.innerHTML = cont;
+                            fila.appendChild(col_Id);
 
-                        let col_Nombre = document.createElement("td");
-                        col_Nombre.innerHTML = producto.nombre;
-                        fila.appendChild(col_Nombre);
+                            let col_Clave = document.createElement("td");
+                            col_Clave.innerHTML = producto.clave;
+                            fila.appendChild(col_Clave);
 
-                        let col_Precio = document.createElement("td");
-                        col_Precio.innerHTML = producto.precio;
-                        fila.appendChild(col_Precio);
+                            let col_Nombre = document.createElement("td");
+                            col_Nombre.innerHTML = producto.nombre;
+                            fila.appendChild(col_Nombre);
 
-                        let col_Ver = document.createElement("td");
-                        col_Ver.innerHTML = '<button type="button" class="btn btn-sm btn-info">Ver</button>';
-                        fila.appendChild(col_Ver);
+                            let col_Precio = document.createElement("td");
+                            col_Precio.innerHTML = producto.precio;
+                            fila.appendChild(col_Precio);
 
-                        let col_Editar = document.createElement("td");
-                        col_Editar.innerHTML = '<button type="button" class="btn btn-sm btn-success">Editar</button>';
-                        fila.appendChild(col_Editar);
+                            let col_Ver = document.createElement("td");
+                            col_Ver.innerHTML = '<button type="button" onclick="verProducto('+ producto.id +')" class="btn btn-sm btn-info">Ver</button>';
+                            fila.appendChild(col_Ver);
 
-                        let col_Borrar = document.createElement("td");
-                        col_Borrar.innerHTML = '<button type="button" class="btn btn-sm btn-danger">Borrar</button>';
-                        fila.appendChild(col_Borrar);
+                            let col_Editar = document.createElement("td");
+                            col_Editar.innerHTML = '<button type="button" onclick="editarProducto('+ producto.id +')" class="btn btn-sm btn-success">Editar</button>';
+                            fila.appendChild(col_Editar);
 
-                        t.tBodies.item(0).appendChild(fila);
-                        cont++;
+                            let col_Borrar = document.createElement("td");
+                            col_Borrar.innerHTML = '<button type="button" class="btn btn-sm btn-danger">Borrar</button>';
+                            fila.appendChild(col_Borrar);
+
+                            t.tBodies.item(0).appendChild(fila);
+                            cont++;
+                        }
                     }
+                }
+            }
+        };
+        req.open('POST', '../php/Productos.php');
+        req.send();
+    }
+
+    // CARGA DE LOS PROOVEEDORES DE LOS PRODUCTOS
+    let req2 = new XMLHttpRequest();
+    req2.onreadystatechange = function() {
+        if (req2.readyState === 4) {
+            // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
+            if (req2.status !== 200) {
+                console.log(req2.responseText);
+            } else {
+                // SE ALMACENAN LOS PROVEEDORES EN UNA VARIABLE
+                proveedores = JSON.parse(req2.responseText);
+                // SE CREA EL option POR DEFECTO EN EL SELECT 'proveedor_id'
+                let optionDefault = document.createElement("option");
+                optionDefault.value = 0;
+                optionDefault.innerHTML = "Seleccione...";
+                proveedorId.appendChild(optionDefault);
+                // SE CARGAN LOS PROVEEDORES EN EL SELECT 'proveedor_id'
+                for (proveedor of proveedores)
+                {
+                    let optionProveedor = document.createElement("option");
+                    optionProveedor.value = proveedor.id;
+                    optionProveedor.innerHTML = proveedor.nombre;
+                    proveedorId.appendChild(optionProveedor);
                 }
             }
         }
     };
-    req.open('POST', '../php/Productos.php');
-    req.send();
+    req2.open('POST', '../php/Proveedores.php');
+    req2.send();
+
+    // SE MUESTRA EL FORMULARIO PARA AGREGAR UN NUEVO PRODUCTO AL DAR CLIC EN EL BOTÓN 'Agregar producto'
+    let btnAgregarProducto = document.querySelector("#btn__agregar-producto");
+    if (btnAgregarProducto)
+    {
+        btnAgregarProducto.addEventListener("click", () => {
+            let containerFormNuevoProducto = document.querySelector("#container__form-nuevo_producto");
+            if (containerFormNuevoProducto.style.display == "" || containerFormNuevoProducto.style.display == "none")
+            {
+                containerFormNuevoProducto.style.display="flex";
+            }
+            else
+            {
+                containerFormNuevoProducto.style.display="none";
+            }
+        });
+    }
+
+    // SE OCULTA EL FORMULARIO PARA AGREGAR UN NUEVO PRODUCTO AL DAR CLIC EN EL ELEMENTO CON LA CLASE 'close-modal'
+    let btnOcultarForm = document.querySelectorAll(".close-modal");
+    btnOcultarForm.forEach(item => {
+        item.addEventListener("click", () => {
+            let i = item.parentElement.parentElement.id;
+            let container = document.querySelector("#" + i);
+            container.style.display="none";
+        })
+    })
+    /*
+    if (btnOcultarForm)
+    {
+        btnOcultarForm.addEventListener("click", () => {
+            console.log(btnOcultarForm.parentElement);
+            let containerFormNuevoProducto = document.querySelector("#container__form-nuevo_producto");
+            let containerProductoInfo = document.querySelector("#container__producto-info");
+            if (containerFormNuevoProducto)
+            {
+                if (containerFormNuevoProducto.style.display == "flex") containerFormNuevoProducto.style.display="";
+            }
+            if (containerProductoInfo)
+            {
+                if (containerProductoInfo.style.display == "flex") containerProductoInfo.style.display="";
+            }
+        })
+    }*/
+
+    // DETECTAR CLICK FUERA DEL FORMULARIO PARA CERRAR EL MODAL
+    document.onclick = detectarClick;
+    function detectarClick(e)
+    {
+        // SI EL MODAL PARA INGRESAR UN NUEVO PRODUCTO ESTÁ VISIBLE
+        if (e.srcElement.id == "container__form-nuevo_producto")
+        {
+            document.querySelector("#container__form-nuevo_producto").style.display = "none";
+        }
+        // SI EL MODAL PARA VER LA INFO DE UN PRODUCTO ESTÁ VISIBLE
+        if (e.srcElement.id == "container__producto-info")
+        {
+            document.querySelector("#container__producto-info").style.display = "none";
+        }
+        // SI EL MODAL PARA VER LA EL FORMULARIO PARA EDITAR UN PRODUCTO ESTÁ VISIBLE
+        if (e.srcElement.id == "container__form-editar_producto")
+        {
+            document.querySelector("#container__form-editar_producto").style.display = "none";
+        }
+    }
+
+    // SE PREVIENE EL SUBMIT DEL FORMULARIO Y SE EVALUAN LOS CAMPOS ANTES DE ENVIARSE MEDIANTE AJAX AL ASERVIDOR
+    formNuevoProducto.addEventListener("submit", e => {
+        e.preventDefault();
+
+        if (clave.value.trim().length == 0)
+        {
+            formInfo.classList.add("alert-danger");
+            formInfo.innerHTML = "¡El campo 'clave' es obligatorio!";
+            clave.focus();
+            return;
+        }
+
+        if (nombre.value.trim().length == 0)
+        {
+            formInfo.classList.add("alert-danger");
+            formInfo.innerHTML = "¡El 'nombre' del producto es obligatorio!";
+            nombre.focus();
+            return;
+        }
+
+        if (descripcion.value.trim().length == 0)
+        {
+            formInfo.classList.add("alert-danger");
+            formInfo.innerHTML = "¡La 'descripcion' del producto es obligatoria!";
+            descripcion.focus();
+            return;
+        }
+
+        if (presentacion.value.trim().length == 0)
+        {
+            formInfo.classList.add("alert-danger");
+            formInfo.innerHTML = "¡La 'presentacion' del producto es obligatoria!";
+            presentacion.focus();
+            return;
+        }
+
+        if (precio.value.trim().length == 0)
+        {
+            formInfo.classList.add("alert-danger");
+            formInfo.innerHTML = "¡El 'precio' del producto es obligatorio!";
+            precio.focus();
+            return;
+        }
+
+        let extensiones = /(.jpg|.jpeg|.png|.gif)$/i;
+        if(!extensiones.exec(imagen.value)){
+            formInfo.classList.add("alert-danger");
+            formInfo.innerHTML = "¡Se debe cargar un archivo de tipo imagen en alguna de los siguientes formatos: '.jpeg', '.jpg', '.png' o '.gif', no mayor a 2MB!";
+            imagen.focus();
+            return;
+        }
+        else
+        {
+            if(imagen.files[0].size > 2097152)
+            {
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡Se debe cargar un archivo de tipo imagen en alguna de los siguientes formatos: '.jpeg', '.jpg', '.png' o '.gif', no mayor a 2MB!";
+                imagen.focus();
+                return;
+            }
+        }
+
+        if (proveedorId.value == 0)
+        {
+            formInfo.classList.add("alert-danger");
+            formInfo.innerHTML = "¡Debe seleccionar el proveedor del producto!";
+            proveedorId.focus();
+            return;
+        }
+
+        // SE ENVÍA LA INFORMACIÓN AL SERVIDOR
+        let req3 = new XMLHttpRequest();
+        let formData = new FormData();
+        formData.append('clave', clave.value);
+        formData.append('nombre', nombre.value);
+        formData.append('descripcion', descripcion.value);
+        formData.append('presentacion', presentacion.value);
+        formData.append('precio', precio.value);
+        formData.append('imagen', imagen.files[0], imagen.files[0].name);
+        formData.append('proveedor_id', proveedorId.value);
+
+        req3.onreadystatechange = function() {
+            if (req3.readyState === 4) {
+                // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
+                if (req3.status !== 200) {
+                    formInfo.classList.add("alert-danger");
+                    formInfo.innerHTML = req3.responseText;
+                    return;
+                }
+                // SI LA RESPUESTA ES SATISFACTORIA
+                else{
+                    // SE LIMPIA EL FORMULARIO
+                    clave.value = "";
+                    nombre.value = ""
+                    descripcion.value = "";
+                    presentacion.value = "";
+                    precio.value = "";
+                    imagen.value = "";
+                    proveedorId.value = 0;
+
+                    formInfo.classList.remove("alert-danger");
+                    formInfo.classList.add("alert-success")
+                    formInfo.innerHTML = JSON.parse(req3.responseText).message;
+
+                    // SE VUELVEN A CARGAR LOS PRODUCTOS
+                    cargarProductos()
+
+                    setTimeout(() => {
+                        formInfo.classList.remove("alert-danger");
+                        formInfo.classList.remove("alert-success");
+                        formInfo.innerHTML = "&nbsp;";
+                    }, 2000);
+                }
+            }
+        };
+        req3.open('POST', '../php/GuardarProducto.php');
+        req3.send(formData);
+
+    });
+
+    /**
+     * Función para mostrar el modal con la información del producto
+     * @param i - de tipo int, corresponde al id del producto a ver
+     */
+    function verProducto(i)
+    {
+        document.querySelector("#container__producto-info").style.display = "flex";
+        let producto = productos.find(el => el.id == i);
+        document.querySelector("#td__img").src = "../images/" + producto.imagen;
+        document.querySelector("#td__clave").innerHTML = producto.clave;
+        document.querySelector("#td__nombre").innerHTML = producto.nombre;
+        document.querySelector("#td__descripcion").innerHTML = producto.descripcion;
+        document.querySelector("#td__presentacion").innerHTML = producto.presentacion;
+        document.querySelector("#td__precio").innerHTML = producto.precio;
+        let proveedor = proveedores.find(el => el.id == producto.proveedor_id);
+        document.querySelector("#td__proveedor").innerHTML = proveedor.nombre;
+    }
+
+    /**
+     * Función para mostrar el formulario para editar un producto
+     * @param i de tipo int, corresponde al id del producto a editar
+     */
+    function editarProducto(i)
+    {
+        document.querySelector("#container__form-editar_producto").style.display = "flex";
+        // SE SELECCIONAN LOS ELEMENTOS DEL FORMULARIO
+        let f = document.querySelector("#form__editar-producto");
+        let id = document.querySelector("#form__editar-producto #id");
+        let clave = document.querySelector("#form__editar-producto #clave");
+        let nombre = document.querySelector("#form__editar-producto #nombre");
+        let descripcion = document.querySelector("#form__editar-producto #descripcion");
+        let presentacion = document.querySelector("#form__editar-producto #presentacion");
+        let precio = document.querySelector("#form__editar-producto #precio");
+        let imagen = document.querySelector("#form__editar-producto #imagen");
+        let proveedorId = document.querySelector("#form__editar-producto #proveedor_id");
+        let formInfo = document.querySelector("#form__editar-producto #form__info");
+
+        // SE CREA EL option POR DEFECTO EN EL SELECT 'proveedor_id'
+        let optionDefault = document.createElement("option");
+        optionDefault.value = 0;
+        optionDefault.innerHTML = "Seleccione...";
+        proveedorId.appendChild(optionDefault);
+
+        // SE CARGAN LOS PROVEEDORES EN EL SELECT 'proveedor_id'
+        for (proveedor of proveedores)
+        {
+            let optionProveedor = document.createElement("option");
+            optionProveedor.value = proveedor.id;
+            optionProveedor.innerHTML = proveedor.nombre;
+            proveedorId.appendChild(optionProveedor);
+        }
+
+        // SE LES ASIGNAN LOS VALORES DEL PRODUCTO
+        let producto = productos.find(el => el.id == i);
+        id.value = producto.id;
+        clave.value = producto.clave;
+        nombre.value = producto.nombre;
+        descripcion.value = producto.descripcion;
+        presentacion.value = producto.presentacion;
+        precio.value = producto.precio;
+        proveedorId.value = producto.proveedor_id
+
+        // SE PREVIENE EL SUBMIT DEL FORMULARIO Y SE EVALUAN LOS CAMPOS ANTES DE ENVIARSE MEDIANTE AJAX AL ASERVIDOR
+        f.addEventListener("submit", e => {
+            e.preventDefault();
+
+            if (clave.value.trim().length == 0)
+            {
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡El campo 'clave' es obligatorio!";
+                clave.focus();
+                return;
+            }
+
+            if (nombre.value.trim().length == 0)
+            {
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡El 'nombre' del producto es obligatorio!";
+                nombre.focus();
+                return;
+            }
+
+            if (descripcion.value.trim().length == 0)
+            {
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡La 'descripcion' del producto es obligatoria!";
+                descripcion.focus();
+                return;
+            }
+
+            if (presentacion.value.trim().length == 0)
+            {
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡La 'presentacion' del producto es obligatoria!";
+                presentacion.focus();
+                return;
+            }
+
+            if (precio.value.trim().length == 0)
+            {
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡El 'precio' del producto es obligatorio!";
+                precio.focus();
+                return;
+            }
+
+            let extensiones = /(.jpg|.jpeg|.png|.gif)$/i;
+            if(!extensiones.exec(imagen.value)){
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡Se debe cargar un archivo de tipo imagen en alguna de los siguientes formatos: '.jpeg', '.jpg', '.png' o '.gif', no mayor a 2MB!";
+                imagen.focus();
+                return;
+            }
+            else
+            {
+                if(imagen.files[0].size > 2097152)
+                {
+                    formInfo.classList.add("alert-danger");
+                    formInfo.innerHTML = "¡Se debe cargar un archivo de tipo imagen en alguna de los siguientes formatos: '.jpeg', '.jpg', '.png' o '.gif', no mayor a 2MB!";
+                    imagen.focus();
+                    return;
+                }
+            }
+
+            if (proveedorId.value == 0)
+            {
+                formInfo.classList.add("alert-danger");
+                formInfo.innerHTML = "¡Debe seleccionar el proveedor del producto!";
+                proveedorId.focus();
+                return;
+            }
+
+            // SE ENVÍA LA INFORMACIÓN AL SERVIDOR
+            let req4 = new XMLHttpRequest();
+            let formData = new FormData();
+            formData.append('id', id.value);
+            formData.append('clave', clave.value);
+            formData.append('nombre', nombre.value);
+            formData.append('descripcion', descripcion.value);
+            formData.append('presentacion', presentacion.value);
+            formData.append('precio', precio.value);
+            formData.append('imagen', imagen.files[0], imagen.files[0].name);
+            formData.append('proveedor_id', proveedorId.value);
+
+            req4.onreadystatechange = function() {
+                if (req4.readyState === 4) {
+                    // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
+                    if (req4.status !== 200) {
+                        formInfo.classList.add("alert-danger");
+                        formInfo.innerHTML = req4.responseText;
+                        return;
+                    }
+                    // SI LA RESPUESTA ES SATISFACTORIA
+                    else{
+                        // SE LIMPIA EL FORMULARIO
+                        clave.value = "";
+                        nombre.value = ""
+                        descripcion.value = "";
+                        presentacion.value = "";
+                        precio.value = "";
+                        imagen.value = "";
+                        proveedorId.value = 0;
+
+                        formInfo.classList.remove("alert-danger");
+                        formInfo.classList.add("alert-success")
+                        formInfo.innerHTML = JSON.parse(req4.responseText).message;
+
+                        // SE VUELVEN A CARGAR LOS PRODUCTOS
+                        cargarProductos()
+
+                        setTimeout(() => {
+                            formInfo.classList.remove("alert-danger");
+                            formInfo.classList.remove("alert-success");
+                            formInfo.innerHTML = "&nbsp;";
+                            document.querySelector("#container__form-editar_producto").style.display = "none";
+                            cargarProductos();
+                        }, 2000);
+                    }
+                }
+            };
+            req4.open('POST', '../php/EditarProducto.php');
+            req4.send(formData);
+        });
+    }
 }

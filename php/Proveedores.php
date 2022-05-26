@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
         // Se abre la conexión a la BD
         $db = $database->openConnection();
         // Se crea la consulta SQL a realizar
-        $sql = "SELECT * FROM productos WHERE deleted_at IS NULL";
+        $sql = "SELECT * FROM proveedores WHERE deleted_at IS NULL";
         // Se prepara la consulta a la BD
         $stm = $db->prepare($sql);
         // Se realiza la consulta a la BD
