@@ -415,9 +415,9 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
     let proveedorId = document.querySelector("#proveedor_id");
     let formInfo = document.querySelector("#form__info");
 
-    // SE LLAMA A LA FUNCIÓN cargarProductos
+    // AL CARGARSE EL DOCUMENTO SE LLAMA A LA FUNCIÓN cargarProductos
     cargarProductos();
-    // CARGA DE LOS PRODUCTOS DEL CATALOGO DE LA BASE DE DATOS
+    // FUNCIÓN PARA CARGA DE LOS PRODUCTOS DEL CATALOGO DE LA BASE DE DATOS
     function cargarProductos()
     {
         let req = new XMLHttpRequest();
@@ -429,40 +429,33 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 } else {
                     productos = JSON.parse(req.responseText);
                     let t = document.querySelector("#table__productos");
+                    t.children[1].textContent = "";
                     if (t) {
                         t.childNodes[3].textContent = "";
                         let cont = 1;
                         for (producto of productos) {
                             let fila = document.createElement("tr");
-
                             let col_Id = document.createElement("td");
                             col_Id.innerHTML = cont;
                             fila.appendChild(col_Id);
-
                             let col_Clave = document.createElement("td");
                             col_Clave.innerHTML = producto.clave;
                             fila.appendChild(col_Clave);
-
                             let col_Nombre = document.createElement("td");
                             col_Nombre.innerHTML = producto.nombre;
                             fila.appendChild(col_Nombre);
-
                             let col_Precio = document.createElement("td");
                             col_Precio.innerHTML = producto.precio;
                             fila.appendChild(col_Precio);
-
                             let col_Ver = document.createElement("td");
                             col_Ver.innerHTML = '<button type="button" onclick="verProducto('+ producto.id +')" class="btn btn-sm btn-info">Ver</button>';
                             fila.appendChild(col_Ver);
-
                             let col_Editar = document.createElement("td");
                             col_Editar.innerHTML = '<button type="button" onclick="editarProducto('+ producto.id +')" class="btn btn-sm btn-success">Editar</button>';
                             fila.appendChild(col_Editar);
-
                             let col_Borrar = document.createElement("td");
                             col_Borrar.innerHTML = '<button type="button" onclick="confirmarEliminarProducto('+ producto.id +')" class="btn btn-sm btn-danger">Borrar</button>';
                             fila.appendChild(col_Borrar);
-
                             t.tBodies.item(0).appendChild(fila);
                             cont++;
                         }
@@ -474,7 +467,7 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         req.send();
     }
 
-    // CARGA DE LOS PROOVEEDORES DE LOS PRODUCTOS
+    // AL CARGARSE EL DOCUMENTO SE REALIZA LA CARGA DE LOS PROOVEEDORES DE LOS PRODUCTOS
     let req2 = new XMLHttpRequest();
     req2.onreadystatechange = function() {
         if (req2.readyState === 4) {
@@ -503,7 +496,7 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
     req2.open('POST', '../php/Proveedores.php');
     req2.send();
 
-    // SE MUESTRA EL FORMULARIO PARA AGREGAR UN NUEVO PRODUCTO AL DAR CLIC EN EL BOTÓN 'Agregar producto'
+    // SE AGREGA EL EVENTO CLIC EN EL BOTÓN 'Agregar producto' PARA MOSTRAR EL FORMULARIO PARA AGREGAR UN NUEVO PRODUCTO
     let btnAgregarProducto = document.querySelector("#btn__agregar-producto");
     if (btnAgregarProducto)
     {
@@ -521,7 +514,7 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         });
     }
 
-    // SE OCULTA EL FORMULARIO PARA AGREGAR UN NUEVO PRODUCTO AL DAR CLIC EN EL ELEMENTO CON LA CLASE 'close-modal'
+    // SE AÑADE EL EVENTO CLICK A LOS ELEMENTOS CON LA CLASE 'close-modal' PARA OCULTAR EL MODAL
     let btnOcultarForm = document.querySelectorAll(".close-modal");
     btnOcultarForm.forEach(item => {
         item.addEventListener("click", () => {
@@ -530,25 +523,8 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             container.style.display="none";
         })
     })
-    /*
-    if (btnOcultarForm)
-    {
-        btnOcultarForm.addEventListener("click", () => {
-            console.log(btnOcultarForm.parentElement);
-            let containerFormNuevoProducto = document.querySelector("#container__form-nuevo_producto");
-            let containerProductoInfo = document.querySelector("#container__producto-info");
-            if (containerFormNuevoProducto)
-            {
-                if (containerFormNuevoProducto.style.display == "flex") containerFormNuevoProducto.style.display="";
-            }
-            if (containerProductoInfo)
-            {
-                if (containerProductoInfo.style.display == "flex") containerProductoInfo.style.display="";
-            }
-        })
-    }*/
 
-    // DETECTAR CLICK FUERA DEL FORMULARIO PARA CERRAR EL MODAL
+    // SE DETECTA EL CLICK EN EL DOCUMENTO Y SE IDENTIFICA EN QUE ELEMENTO SE DIO CLICK PARA DETERMINAR EL CIERRE DEL MODAL
     document.onclick = detectarClick;
     function detectarClick(e)
     {
@@ -574,10 +550,16 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         }
     }
 
-    // SE PREVIENE EL SUBMIT DEL FORMULARIO Y SE EVALUAN LOS CAMPOS ANTES DE ENVIARSE MEDIANTE AJAX AL ASERVIDOR
+    // CUANDO SE DETECTE UN CAMBIO EN EL FORMULARIO SE OCULTARÁ EL ÁREA DE MENSAJES
+    formNuevoProducto.addEventListener("change", e => {
+        formInfo.classList.remove("alert-danger");
+        formInfo.innerHTML = "&nbsp;";
+    });
+
+    // CUANDO SE REALIZA EL SUBMIT DEL FORMULARIO DE PARA AGREGAR UN NUEVO PRODUCTO, SE PREVIENE EL SUBMIT DEL FORMULARIO Y SE EVALUAN LOS CAMPOS ANTES DE ENVIARSE MEDIANTE AJAX AL SERVIDOR
     formNuevoProducto.addEventListener("submit", e => {
         e.preventDefault();
-
+        // SE EVALUAN LOS CAMPOS DEL FORMULARIO
         if (clave.value.trim().length == 0)
         {
             formInfo.classList.add("alert-danger");
@@ -585,7 +567,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             clave.focus();
             return;
         }
-
         if (nombre.value.trim().length == 0)
         {
             formInfo.classList.add("alert-danger");
@@ -593,7 +574,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             nombre.focus();
             return;
         }
-
         if (descripcion.value.trim().length == 0)
         {
             formInfo.classList.add("alert-danger");
@@ -601,7 +581,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             descripcion.focus();
             return;
         }
-
         if (presentacion.value.trim().length == 0)
         {
             formInfo.classList.add("alert-danger");
@@ -609,7 +588,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             presentacion.focus();
             return;
         }
-
         if (precio.value.trim().length == 0)
         {
             formInfo.classList.add("alert-danger");
@@ -617,7 +595,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             precio.focus();
             return;
         }
-
         let extensiones = /(.jpg|.jpeg|.png|.gif)$/i;
         if(!extensiones.exec(imagen.value)){
             formInfo.classList.add("alert-danger");
@@ -635,7 +612,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 return;
             }
         }
-
         if (proveedorId.value == 0)
         {
             formInfo.classList.add("alert-danger");
@@ -643,7 +619,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             proveedorId.focus();
             return;
         }
-
         // SE ENVÍA LA INFORMACIÓN AL SERVIDOR
         let req3 = new XMLHttpRequest();
         let formData = new FormData();
@@ -654,7 +629,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         formData.append('precio', precio.value);
         formData.append('imagen', imagen.files[0], imagen.files[0].name);
         formData.append('proveedor_id', proveedorId.value);
-
         req3.onreadystatechange = function() {
             if (req3.readyState === 4) {
                 // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
@@ -673,14 +647,11 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                     precio.value = "";
                     imagen.value = "";
                     proveedorId.value = 0;
-
                     formInfo.classList.remove("alert-danger");
                     formInfo.classList.add("alert-success")
                     formInfo.innerHTML = JSON.parse(req3.responseText).message;
-
                     // SE VUELVEN A CARGAR LOS PRODUCTOS
-                    cargarProductos()
-
+                    cargarProductos();
                     setTimeout(() => {
                         formInfo.classList.remove("alert-danger");
                         formInfo.classList.remove("alert-success");
@@ -691,7 +662,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         };
         req3.open('POST', '../php/GuardarProducto.php');
         req3.send(formData);
-
     });
 
     /**
@@ -730,15 +700,17 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         let imagen = document.querySelector("#form__editar-producto #imagen");
         let proveedorId = document.querySelector("#form__editar-producto #proveedor_id");
         let formInfo = document.querySelector("#form__editar-producto #form__info");
-        let btnCancelar = document.querySelector("#form__editar-producto #btn__cancelar");
-        let btnEliminar = document.querySelector("#form__editar-producto #btn__eliminar");
+
+        f.addEventListener("change", () => {
+            formInfo.classList.remove("alert-danger");
+            formInfo.innerHTML = "&nbsp;";
+        });
 
         // SE CREA EL option POR DEFECTO EN EL SELECT 'proveedor_id'
         let optionDefault = document.createElement("option");
         optionDefault.value = 0;
         optionDefault.innerHTML = "Seleccione...";
         proveedorId.appendChild(optionDefault);
-
         // SE CARGAN LOS PROVEEDORES EN EL SELECT 'proveedor_id'
         for (proveedor of proveedores)
         {
@@ -747,7 +719,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             optionProveedor.innerHTML = proveedor.nombre;
             proveedorId.appendChild(optionProveedor);
         }
-
         // SE LES ASIGNAN LOS VALORES DEL PRODUCTO
         let producto = productos.find(el => el.id == i);
         id.value = producto.id;
@@ -757,11 +728,9 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         presentacion.value = producto.presentacion;
         precio.value = producto.precio;
         proveedorId.value = producto.proveedor_id
-
         // SE PREVIENE EL SUBMIT DEL FORMULARIO Y SE EVALUAN LOS CAMPOS ANTES DE ENVIARSE MEDIANTE AJAX AL ASERVIDOR
         f.addEventListener("submit", e => {
             e.preventDefault();
-
             if (clave.value.trim().length == 0)
             {
                 formInfo.classList.add("alert-danger");
@@ -769,7 +738,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 clave.focus();
                 return;
             }
-
             if (nombre.value.trim().length == 0)
             {
                 formInfo.classList.add("alert-danger");
@@ -777,7 +745,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 nombre.focus();
                 return;
             }
-
             if (descripcion.value.trim().length == 0)
             {
                 formInfo.classList.add("alert-danger");
@@ -785,7 +752,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 descripcion.focus();
                 return;
             }
-
             if (presentacion.value.trim().length == 0)
             {
                 formInfo.classList.add("alert-danger");
@@ -793,7 +759,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 presentacion.focus();
                 return;
             }
-
             if (precio.value.trim().length == 0)
             {
                 formInfo.classList.add("alert-danger");
@@ -801,7 +766,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 precio.focus();
                 return;
             }
-
             let extensiones = /(.jpg|.jpeg|.png|.gif)$/i;
             if(!extensiones.exec(imagen.value)){
                 formInfo.classList.add("alert-danger");
@@ -819,7 +783,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                     return;
                 }
             }
-
             if (proveedorId.value == 0)
             {
                 formInfo.classList.add("alert-danger");
@@ -827,7 +790,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                 proveedorId.focus();
                 return;
             }
-
             // SE ENVÍA LA INFORMACIÓN AL SERVIDOR
             let req4 = new XMLHttpRequest();
             let formData = new FormData();
@@ -839,13 +801,12 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             formData.append('precio', precio.value);
             formData.append('imagen', imagen.files[0], imagen.files[0].name);
             formData.append('proveedor_id', proveedorId.value);
-
             req4.onreadystatechange = function() {
                 if (req4.readyState === 4) {
                     // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
                     if (req4.status !== 200) {
                         formInfo.classList.add("alert-danger");
-                        formInfo.innerHTML = req4.responseText;
+                        formInfo.innerHTML = JSON.parse(req4.responseText).message;
                         return;
                     }
                     // SI LA RESPUESTA ES SATISFACTORIA
@@ -879,30 +840,22 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             req4.open('POST', '../php/EditarProducto.php');
             req4.send(formData);
         });
-
-        // OCULTAR EL FORMULARIO CUANDO SE DA CLIC EN EL BOTÓN DE cancelar
-        btnCancelar.addEventListener("click", () => {
-            document.querySelector("#container__form-editar_producto").style.display = "none";
-        });
-
-        // EJECUTAR LA FUNCIÓN confirmarEliminarProducto AL DAR CLIC EN EL BOTÓN eliminar
-        btnEliminar.addEventListener("click", () => {
-            confirmarEliminarProducto(id.value);
-        });
     }
 
     /**
-     * Función para eliminar el producto
+     * Función para mostrar el modal de confirmación para eliminar el producto
      * @param i de tipo int, corresponde al id del producto a eliminar
      */
     function confirmarEliminarProducto(i)
     {
+        // SE MUESTRA EL MODAL
         document.querySelector("#container__form-eliminar_producto").style.display = "flex";
+        // SI SE DA CLICK EN EL BOTÓN 'cancelar' SE CIERRA EL MODAL
         let btnCancelar = document.querySelector("#form__eliminar-producto #btn__cancelar");
         btnCancelar.addEventListener("click", () => {
             document.querySelector("#container__form-eliminar_producto").style.display = "none";
         });
-
+        // AL DARSE CLICK EN EL SUBMIT DEL FORMULARIO, SE PREVIENE EL SUBMIT Y SE MANDA LA INFORMACIÓN AL SERVIDOR POR AJAX
         let f = document.querySelector("#form__eliminar-producto");
         f.addEventListener("submit", e => {
             e.preventDefault();
@@ -910,7 +863,6 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             let req5 = new XMLHttpRequest();
             let formData = new FormData();
             formData.append('id', i);
-
             req5.onreadystatechange = function() {
                 if (req5.readyState === 4) {
                     // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR

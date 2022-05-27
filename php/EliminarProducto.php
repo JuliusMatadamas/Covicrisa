@@ -30,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
             header("Access-Control-Allow-Origin: *");
             header("content-type:application/json");
             http_response_code(200);
-            echo json_encode(['message' => 'El producto fue eliminado']);
+            echo json_encode(['message' => 'El producto fue eliminado ']);
             exit;
         }
         else
         {
             http_response_code(400);
-            echo json_encode(['message' => 'Ocurrió un error y el servidor no pudo procesar la eliminación del producto.']);
+            echo json_encode(['message' => 'Ocurrió un error y el servidor no pudo procesar la eliminación del producto']);
             exit;
         }
     }
