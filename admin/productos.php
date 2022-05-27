@@ -226,10 +226,10 @@ if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
 
                 <div class="row">
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-danger w-100">Eliminar</button>
+                        <button type="button" id="btn__eliminar" class="btn btn-danger w-100">Eliminar</button>
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-warning w-100">Cancelar</button>
+                        <button type="button" id="btn__cancelar" class="btn btn-warning w-100">Cancelar</button>
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-secondary w-100">Actualizar</button>
@@ -244,6 +244,52 @@ if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
                     </div>
                 </div>
             </form>
+        </div>
+    </section>
+
+    <!-- SECCIÓN PARA MOSTRAR EL FORMUALRIO PARA ELIMINAR UN PRODUCTO -->
+    <section id="container__form-eliminar_producto">
+        <div id="card__editar-producto" class="card text-start">
+            <div class="close-modal">
+                &times;
+            </div>
+            <form id="form__eliminar-producto">
+                <div class="row">
+                    <div class="col-12">
+                        <p>¿Seguro que deseas eliminar este producto?</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" id="btn__cancelar" class="btn btn-warning w-75">Cancelar</button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-danger w-75">Confirmar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- SECCIÓN PARA MOSTRAR LA CONFIRMACIÓN DE ELIMINACIÓN DEL PRODUCTO -->
+    <section id="container__producto-eliminado">
+        <div id="card__producto-eliminado" class="card">
+            <div class="close-modal">
+                &times;
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p class="text-success" id="respuesta__producto-eliminado"></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" id="btn__producto-eliminado" class="btn btn-success w-100">Continuar</button>
+                </div>
+            </div>
         </div>
     </section>
 

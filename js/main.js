@@ -460,7 +460,7 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
                             fila.appendChild(col_Editar);
 
                             let col_Borrar = document.createElement("td");
-                            col_Borrar.innerHTML = '<button type="button" class="btn btn-sm btn-danger">Borrar</button>';
+                            col_Borrar.innerHTML = '<button type="button" onclick="confirmarEliminarProducto('+ producto.id +')" class="btn btn-sm btn-danger">Borrar</button>';
                             fila.appendChild(col_Borrar);
 
                             t.tBodies.item(0).appendChild(fila);
@@ -507,6 +507,7 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
     let btnAgregarProducto = document.querySelector("#btn__agregar-producto");
     if (btnAgregarProducto)
     {
+        // SE AGREGA EL EVENTO AL CONTENEDOR PARA OCULTAR EL FORMULARIO
         btnAgregarProducto.addEventListener("click", () => {
             let containerFormNuevoProducto = document.querySelector("#container__form-nuevo_producto");
             if (containerFormNuevoProducto.style.display == "" || containerFormNuevoProducto.style.display == "none")
@@ -561,10 +562,15 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         {
             document.querySelector("#container__producto-info").style.display = "none";
         }
-        // SI EL MODAL PARA VER LA EL FORMULARIO PARA EDITAR UN PRODUCTO ESTÁ VISIBLE
+        // SI EL MODAL PARA VER EL FORMULARIO PARA EDITAR UN PRODUCTO ESTÁ VISIBLE
         if (e.srcElement.id == "container__form-editar_producto")
         {
             document.querySelector("#container__form-editar_producto").style.display = "none";
+        }
+        // SI EL MODAL PARA CONFIRMAR LA ELIMINACIÓN DE UN PRODUCTO ESTÁ VISIBLE
+        if (e.srcElement.id == "container__form-eliminar_producto")
+        {
+            document.querySelector("#container__form-eliminar_producto").style.display = "none";
         }
     }
 
@@ -724,6 +730,8 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
         let imagen = document.querySelector("#form__editar-producto #imagen");
         let proveedorId = document.querySelector("#form__editar-producto #proveedor_id");
         let formInfo = document.querySelector("#form__editar-producto #form__info");
+        let btnCancelar = document.querySelector("#form__editar-producto #btn__cancelar");
+        let btnEliminar = document.querySelector("#form__editar-producto #btn__eliminar");
 
         // SE CREA EL option POR DEFECTO EN EL SELECT 'proveedor_id'
         let optionDefault = document.createElement("option");
@@ -870,6 +878,67 @@ if (itemsUrl.indexOf("productos.php") !== -1) {
             };
             req4.open('POST', '../php/EditarProducto.php');
             req4.send(formData);
+        });
+
+        // OCULTAR EL FORMULARIO CUANDO SE DA CLIC EN EL BOTÓN DE cancelar
+        btnCancelar.addEventListener("click", () => {
+            document.querySelector("#container__form-editar_producto").style.display = "none";
+        });
+
+        // EJECUTAR LA FUNCIÓN confirmarEliminarProducto AL DAR CLIC EN EL BOTÓN eliminar
+        btnEliminar.addEventListener("click", () => {
+            confirmarEliminarProducto(id.value);
+        });
+    }
+
+    /**
+     * Función para eliminar el producto
+     * @param i de tipo int, corresponde al id del producto a eliminar
+     */
+    function confirmarEliminarProducto(i)
+    {
+        document.querySelector("#container__form-eliminar_producto").style.display = "flex";
+        let btnCancelar = document.querySelector("#form__eliminar-producto #btn__cancelar");
+        btnCancelar.addEventListener("click", () => {
+            document.querySelector("#container__form-eliminar_producto").style.display = "none";
+        });
+
+        let f = document.querySelector("#form__eliminar-producto");
+        f.addEventListener("submit", e => {
+            e.preventDefault();
+            // SE ENVÍA LA INFORMACIÓN AL SERVIDOR
+            let req5 = new XMLHttpRequest();
+            let formData = new FormData();
+            formData.append('id', i);
+
+            req5.onreadystatechange = function() {
+                if (req5.readyState === 4) {
+                    // SI NO SE OBTUVO RESPUESTA SATISFACTORIA DEL SERVIDOR
+                    if (req5.status !== 200) {
+                        let response = JSON.parse(req5.responseText);
+                        document.querySelector("#container__form-eliminar_producto").style.display = "none";
+                        document.querySelector("#container__producto-eliminado").style.display = "flex";
+                        document.querySelector("#respuesta__producto-eliminado").innerHTML = response.message;
+                        document.querySelector("#btn__producto-eliminado").addEventListener("click", () => {
+                            document.querySelector("#container__producto-eliminado").style.display = "none";
+                        });
+                    }
+                    // SI LA RESPUESTA ES SATISFACTORIA
+                    else{
+                        let response = JSON.parse(req5.responseText);
+                        document.querySelector("#container__form-eliminar_producto").style.display = "none";
+                        document.querySelector("#container__producto-eliminado").style.display = "flex";
+                        document.querySelector("#respuesta__producto-eliminado").innerHTML = response.message;
+                        document.querySelector("#btn__producto-eliminado").addEventListener("click", () => {
+                            document.querySelector("#container__form-editar_producto").style.display = "none";
+                            document.querySelector("#container__producto-eliminado").style.display = "none";
+                            cargarProductos();
+                        });
+                    }
+                }
+            };
+            req5.open('POST', '../php/EliminarProducto.php');
+            req5.send(formData);
         });
     }
 }
