@@ -241,7 +241,6 @@ if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
                     <div class="col-md-6">
                         <button type="button" id="btn__cancelar" class="btn btn-warning w-75">Cancelar</button>
                     </div>
-
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-danger w-75">Confirmar</button>
                     </div>

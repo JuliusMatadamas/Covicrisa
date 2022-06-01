@@ -30,7 +30,6 @@ Contenido de la página
                                 minlength="10"
                                 maxlength="50"
                                 placeholder="Ingrese su nombre completo"
-                                required
                         >
                         <div id="feedback__nombre" class="feedback">
                             &nbsp;
@@ -49,7 +48,6 @@ Contenido de la página
                                 min="1"
                                 max="60"
                                 placeholder="18 - 60"
-                                required
                         >
                         <div id="feedback__edad" class="feedback">
                             &nbsp;
@@ -64,7 +62,6 @@ Contenido de la página
                                 name="email"
                                 id="email"
                                 placeholder="ejemplo@email.com"
-                                required
                         >
                         <div id="feedback__email" class="feedback">
                             &nbsp;
@@ -83,7 +80,6 @@ Contenido de la página
                                 rows="3"
                                 minlength="20"
                                 placeholder="Ingrese mínimo 20 caracteres."
-                                required
                         ></textarea>
                         <div id="feedback__solicitud" class="feedback">
                             &nbsp;
@@ -108,7 +104,7 @@ Contenido de la página
                 </div>
             </form>
 
-            <div id="respuesta__cotizacion" class="row text-center">&nbsp;</div>
+            <div id="respuesta__cotizacion" class="">&nbsp;</div>
         </article>
     </section>
 </main>

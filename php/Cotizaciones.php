@@ -21,9 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
         $cotizaciones = $stm->fetchAll(PDO::FETCH_ASSOC);
         // Se cierra la conexión a la BD
         $database->closeConnection();
-
-        header("Access-Control-Allow-Origin: *");
-        header("content-type:application/json");
         http_response_code(200);
         echo json_encode($cotizaciones);
         exit;

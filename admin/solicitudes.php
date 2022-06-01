@@ -28,7 +28,7 @@ if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
                             <th>Correo</th>
                             <th>Fecha de solicitud</th>
                             <th>Descripción</th>
-                            <th colspan="3">Acciones</th>
+                            <th>Acción</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -38,6 +38,59 @@ if (isset($_SESSION["login"]) && !empty($_SESSION["login"]))
             </div>
         </section>
     </main>
+
+    <section id="container__confirm-eliminar_cotizacion">
+        <div id="card__eliminar-producto" class="card">
+            <div class="close-modal">
+                &times;
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4>¿Seguro que deseas eliminar esta solicitud de cotización?</h4>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <button
+                            type="button"
+                            class="btn btn-warning w-75"
+                            id="btn-cancelar"
+                    >Cancelar</button>
+                </div>
+                <div class="col-6">
+                    <button
+                            type="button"
+                            class="btn btn-danger w-75"
+                            id="btn-confirmar"
+                    >Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="container__mensaje-eliminar_cotizacion">
+        <div id="card__eliminar-producto" class="card">
+            <div class="close-modal">
+                &times;
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4 id="mensaje"></h4>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <button
+                            type="button"
+                            class="btn btn-primary w-75"
+                            id="btn-continuar"
+                    >Continuar</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!--
     Se importa la parte inferior del documento

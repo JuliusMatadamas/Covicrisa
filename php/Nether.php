@@ -9,6 +9,7 @@ Se importan los archivos 'JS'
 -->
 <script src="<?php echo $uri; ?>js/main.js"></script>
 <?php
+// SE DETERMINA EN QUE SECCIÓN SE UBICA EL USUARIO
 $items = explode("/", $_SERVER["PHP_SELF"]);
 if (array_search("contacto.php", $items))
 {
@@ -18,7 +19,17 @@ if (array_search("contacto.php", $items))
 }
 elseif (array_search("login.php", $items))
 {
-    echo "<script src='js/login.js'></script>
+    echo "<script src='".$uri."js/login.js'></script>
+";
+}
+elseif (array_search("cotizacion.php", $items))
+{
+    echo "<script src='".$uri."js/cotizacion.js'></script>
+";
+}
+elseif (array_search("solicitudes.php", $items))
+{
+    echo "<script src='".$uri."js/solicitudes.js'></script>
 ";
 }
 ?>
